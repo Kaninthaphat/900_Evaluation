@@ -1,0 +1,173 @@
+<?page title="SUS Evaluation" contentType="text/html;charset=UTF-8"?>
+<zk>
+		<borderlayout style="background-color:#222222;"
+		vflex="1" hflex="1"
+		visible="true"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('view.view_903_Evaluation_Form')"
+		validationMessages="@id('vmsgs')">
+		
+		<center>	
+			<vlayout vflex="1" hflex="1" visible="@bind(!vm.openWindow_emp)">	 	   
+			    <toolbar>
+					<hlayout spacing="5px">
+					   <toolbarbutton label="@bind(vm.profile_login)" style="font-color;font-size:13px;" />	
+					   <toolbarbutton label="@bind(vm.last_vote)" style="font-color;font-size:13px;" />		
+					   <toolbarbutton label="@bind(vm.total_m)" style="font-color;font-size:13px;" />	
+					   <toolbarbutton label="@bind(vm.total_mvote)" style="font-color;font-size:13px;" />														   	        				            		       	   	    
+					</hlayout>
+			    </toolbar>
+			    
+				<hlayout height="80px">
+					<image src="/images/evaluation_true.png" width="220px" height="70px"></image>
+					<vlayout height="120px">
+					    <div height="20px"></div>
+						<label value="@bind(vm.title_lable)" style="color:#333333;font-size:24px;text-align:center;" ></label>		
+					</vlayout>	
+				</hlayout>
+				
+				<listbox id="list"
+						model="@load(vm.model_list_ev_detail)" 
+						selectedItem="@bind(vm.select_ev_detail)" 
+						hflex="1" vflex="1">
+							<listhead>						 
+								 <listheader label="#" width="50px" align="center" style="color:#FFFFFF;background-color:#990000;font-size:16px;"/>
+								 <listheader label="หัวข้อ" align="center" style="color:#FFFFFF;background-color:#990000;font-size:16px;"/>						 
+								 <listheader label="" width="50px" align="center" style="color:#FFFFFF;background-color:#990000;font-size:16px;"/>
+								 <listheader label="คะแนน" width="160px" align="center" style="color:#FFFFFF;background-color:#990000;font-size:16px;"/>    
+								 <listheader label="" width="60px" align="center" visible="false"/>  					   					    					    				 											                       					    			   				    					   					    							    	
+							</listhead>
+							<template name="model" var="item">
+							<listitem>					    
+								<listcell label="@load(item.sequen)" style="text-align:center;font-size:16px;"></listcell>
+								<listcell label="@load(item.evdetail_topic)" style="text-align:left;font-size:16px;"></listcell>
+								<listcell>		
+							     <a image="/images/_edit.png" hoverImage="/images/text_signature.png" onClick="@command('on_openPoint')" tooltiptext="Click To Select Point."></a>						   	
+								</listcell>		
+								<listcell label="@bind(item.topic_name)" style="text-align:left;font-size:16px;"></listcell>		
+								<listcell>	
+								    <textbox readonly="true" value="@bind(item.point_amount)" width="30px"></textbox>								
+								</listcell>																																																			
+							</listitem>
+							</template>
+				 </listbox>		
+				 
+				<listbox >
+			 	<listhead>	
+			 	    <listheader align="left"/>
+					<listheader align="left"/>	
+					<listheader align="left"/>		
+				</listhead>
+				<listitem>
+					
+					<listcell >
+					    <label value="ข้อเสนอแนะ" style="color:#333333;text-align:center;font-size:16px;"></label>
+						<textbox width="99%" rows="5" value="@bind(vm.remark)"/>
+					</listcell>
+					<listcell >
+						<button label="ยืนยันผล" width="140px" height="45px" 
+						onClick="@command('on_Update')"
+						style="font-size:16px;" 
+						image="/images/main.gif">
+						</button>
+						<button label="ออกจากระบบ" width="140px" height="45px" 
+						onClick="@command('on_Cancel')"
+						style="font-size:16px;" 
+						image="/images/del.gif">
+						</button>
+					</listcell>
+					<listcell >
+					<vlayout>				
+		    			<label value="* หากมีการประเมินมากกว่า 1 ครั้ง จะคำนวณผลการประเมินครั้งล่าสุดเท่านั้น" style="color:#cc3333;text-align:center;font-size:14px;"></label>
+					</vlayout>
+					</listcell>
+				</listitem>
+			</listbox>
+			
+			</vlayout>			   
+		</center>   
+		 
+		<south>
+			<vlayout>
+				<window id="win_list"
+				    border="1" style="background-color:#eeeeee"
+					width="94%" 
+					height="94%" 
+					mode="modal" 
+					visible="@bind(vm.openWindow_emp)"
+					sizable="false"
+					position="center">
+		            <vlayout vflex="1" hflex="1">
+			            <hlayout hflex="1">
+							<image src="/images/evaluation_true.png" width="90%" height="100px"></image>
+							
+						</hlayout>
+			            
+						<listbox model="@load(vm.model_list_ev_emp)" selectedItem="@bind(vm.select_ev_emp)" vflex="1" hflex="1">
+										<listhead>	
+										     <listheader label="#"  align="center" width="40px" style="color:#FFFFFF;background-color:#990000;font-size:24px;"/>    					   					    					    				 											                       					    			   				    					   					    							    					 
+											 <listheader label="เลือกหัวข้อการประเมิน"  align="center" style="color:#FFFFFF;background-color:#990000;font-size:24px;"/> 
+											 <listheader label="" width="70px" align="center" style="color:#FFFFFF;background-color:#990000;font-size:24px;"/>
+											 <listheader label="หน่วยงาน" width="180px" align="center" style="color:#FFFFFF;background-color:#990000;font-size:24px;"/>  					   					    					    				 											                       					    			   				    					   					    							    	
+										 </listhead>
+										<template name="model" var="item">
+										<listitem>	
+										   	<listcell label="@load(item.row_number)" style="font-size:24px;"></listcell>			    
+											<listcell label="@load(item.ev_topic)" style="text-align:left;font-size:24px;" onClick="@command('load_ev_detail')"></listcell>		
+											<listcell >
+												<a image="/images/_edit.png" hoverImage="/images/text_signature.png" onClick="@command('on_closeToptic')" tooltiptext="Click to view."></a>
+											</listcell>	
+											<listcell label="@load(item.ev_suggestion)" style="text-align:left;font-size:24px;"></listcell>	
+																																																																
+										</listitem>
+										</template>
+							 </listbox>					         			      
+				    </vlayout>
+			 	</window>	
+			
+			    <window id="win_list_point"
+				    border="1" style="background-color:#eeeeee"
+					width="450px" 
+					height="270px" 
+					mode="modal" 
+					visible="@bind(vm.openWindow_point)"
+					sizable="false"
+					position="center">
+		            <vlayout vflex="1" hflex="1">
+	
+						<listbox model="@load(vm.model_list_point)" checkmark="true"
+							selectedItem="@bind(vm.select_point)" vflex="1" hflex="1">
+							<listhead>						    
+								<listheader label="#" align="center"
+									width="40px"
+									style="color:#FFFFFF;background-color:#990000;font-size:18px;" />
+								<listheader label="คะแนน"
+									align="center"
+									style="color:#FFFFFF;background-color:#990000;font-size:18px;" />
+								
+							</listhead>
+							<template name="model" var="item">
+								<listitem>
+								    <listcell></listcell>								
+									<listcell label="@load(item.c_Name)" style="text-align:left;font-size:18px;"></listcell>							
+								</listitem>
+							</template>
+						</listbox>
+						<hlayout>
+						    <div width="150px"></div>
+							<button label="OK" onClick="@command('on_select_Point')" 
+							width="100px" height="35px"
+							style="font-size:18px;color:#339933;"></button>
+						
+						</hlayout>
+	
+		            </vlayout>
+			 	</window>	
+			     
+			</vlayout>	
+		</south>
+		
+		</borderlayout> 
+	
+	     
+</zk>

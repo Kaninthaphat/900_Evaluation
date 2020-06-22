@@ -1,0 +1,182 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<borderlayout vflex="1" apply="org.zkoss.bind.BindComposer" 
+	viewModel="@id('vm') @init('view.view_904_Evaluation_Sum')"
+	validationMessages="@id('vmsgs')">
+	
+	<north style="background:#990000;">
+	    <vlayout style="background:#ffffff;">
+		        
+		 <toolbar>
+			<hlayout spacing="5px">
+				
+				<toolbarbutton label="Excel"
+					image="/images/file_extension_xls.png"
+					onClick="@command('onCallExcel')"
+					style="color:#666666;font-size:12px;"
+					tooltiptext="Click To Export To Excel File." />
+
+			</hlayout>
+		 </toolbar>
+		
+		 <window id="windowLogin"
+			border="normal" 
+			width="400px" 
+			height="230px" 
+			mode="modal" 
+			visible="@bind(vm.openWindow_login)"
+			sizable="false"
+			style="background-color:#333333"
+			position="center">
+			<vlayout height="220px">
+			<separator height="15px"/>
+			    <hlayout>	
+					<image src="/images/Folder-Blank-icon.png"/>
+					<div width="10px" align="right" />
+					<div width="100%" align="left">
+							<label value="System " style="font-weight:bold;color:#000000;font-size:22px;"/>
+							<label value="Login" style="font-weight:bold;color:#ee0000;font-size:22px;"/>
+				    </div>
+			    </hlayout>
+				<hlayout spacing="10px">
+				    <div width="70px" align="right"/>
+					<div width="130px" align="left">
+						<label value="Password" style="font-weight:bold;color:#666666;font-size:13px;"/>
+					</div>
+				</hlayout>
+				
+				<hlayout spacing="10px">
+				    <div width="70px" 
+				    align="right"/>
+					<textbox width="250px" 
+					value="@bind(vm.password_check)" 
+					style="color:#666666;font-size:15px;" 
+					onOK="@command('on_checkedPassword')"
+					onCreate="self.focus()"				
+					maxlength="4" type="password"/>
+				</hlayout>
+				
+				<separator height="10px"/>
+				
+				<hlayout spacing="10px" >
+				    <div width="230px"/>
+					<button label="Login" onClick="@command('on_checkedPassword')" width="80px" height="30px" image="/images/lock_break.png"/>			
+				</hlayout>
+				
+			</vlayout>
+		   </window>
+		
+		</vlayout>
+	</north>
+	
+	<west collapsible="true" open="true" minsize="50" size="50"
+		splittable="true" width="32%">
+		<vlayout vflex="1">
+			<listbox model="@load(vm.model_list_ev_head)"
+				selectedItem="@bind(vm.select_ev_head)"
+				onSelect="@command('load_detail')" vflex="1">
+				<listhead sizable="true">
+					<listheader label="#" width="40px" align="center"
+						style="color:#FFFFFF;background-color:#990000;font-size:15px;" />
+					<listheader label="หัวข้อ" align="center"
+						style="color:#FFFFFF;background-color:#990000;font-size:15px;" />
+				</listhead>
+				<template name="model" var="item">
+					<listitem>
+						<listcell label="@load(item.row_number)"
+							style="color:#333333;font-size:14px;">
+						</listcell>
+						<listcell label="@load(item.ev_topic)"
+							style="text-align:left;color:#333333;font-size:13px;">
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+
+		</vlayout>
+	</west>
+
+	<center vflex="1" hflex="1">				
+			<tabbox vflex="1" hflex="1">
+				<tabs>
+					<tab label="คะแนนรวม" vflex="1" hflex="1"/>
+					<tab label="คะแนนรายบุคคล" vflex="1" hflex="1"/>
+					<tab label="ข้อเสนอแนะ" vflex="1" hflex="1"/>
+				</tabs>
+				<tabpanels>
+					<tabpanel vflex="1" hflex="1">
+						<listbox model="@load(vm.model_list_ev_head_detail)" 
+				         selectedItem="@bind(vm.select_ev_head_detail)" 						       
+				         vflex="1">
+							<listhead sizable="true">
+								 <listheader label="#" width="40px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>						
+								 <listheader label="การประเมินเรื่อง" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>	
+								 <listheader label="คะแนนรวม" width="90px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>
+								 <listheader label="จำนวนผู้ประเมิน" width="120px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>
+								 <listheader label="คะแนนเฉี่ย" width="90px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>					   					    					    									                       														     									    						    			   				    					   					    							    	
+							</listhead>
+							<template name="model" var="item">
+								<listitem>
+									<listcell label="@load(item.row_number)" style="font-size:14px;"></listcell>
+									<listcell label="@load(item.ev_topic)" style="text-align:left;font-size:13px;"></listcell>	
+									<listcell label="@load(vm.formatSring(item.sum_point))" style="text-align:right;font-size:14px;"></listcell>	
+									<listcell label="@load(vm.formatSring(item.sum_total))" style="text-align:right;font-size:14px;"></listcell>					
+									<listcell label="@load(vm.formatSring(item.avg_point))" style="text-align:right;font-size:14px;"></listcell>																																																									
+								</listitem>
+							</template>
+						</listbox>		
+					</tabpanel>				
+					
+					<tabpanel vflex="1" hflex="1">
+						<listbox model="@load(vm.model_list_ev_head_desc)" 
+					         selectedItem="@bind(vm.select_ev_head_desc)" 				        			       
+					         vflex="1">
+								<listhead sizable="true">
+									 <listheader label="#" width="40px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>						
+									 <listheader label="แผนก" width="140px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>
+									 <listheader label="ตำแหน่ง" width="140px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>
+									 <listheader label="รหัส" width="110px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>	
+									 <listheader label="การประเมิน"  align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>	
+									 <listheader label="คะแนน" width="60px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>									     					    									                       														     									    						    			   				    					   					    							    	
+								</listhead>
+								<template name="model" var="item">
+									<listitem>
+										<listcell label="@load(item.row_number)" style="color:#333333;font-size:14px;"></listcell>
+										<listcell label="@load(item.department_Name)" style="text-align:left;color:#333333;font-size:13px;"></listcell>	
+										<listcell label="@load(item.position_Name)" style="text-align:left;color:#333333;font-size:13px;"></listcell>
+										<listcell label="@load(item.emp_code)" style="text-align:left;color:#333333;font-size:13px;"></listcell>
+										<listcell label="@load(item.ev_topic)" style="text-align:left;color:#333333;font-size:13px;"></listcell>
+										<listcell label="@load(item.emp_amount)" style="text-align:right;font-size:14px;"></listcell>																																																																	
+									</listitem>
+								</template>
+							</listbox>		
+					</tabpanel>
+					
+					<tabpanel vflex="1" hflex="1">
+							<listbox model="@load(vm.model_list_ev_head_comment)" 
+					         selectedItem="@bind(vm.select_ev_head_comment)" 				        			       
+					         vflex="1">
+								<listhead sizable="true">
+									 <listheader label="#" width="40px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>						
+									 <listheader label="แผนก" width="180px" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>
+									 <listheader label="ตำแหน่ง" width="150px" visible="false" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>
+									 <listheader label="ข้อเสนอแนะ" align="center" style="color:#333333;background-color:#eeeeee;font-size:15px;"/>									     					    									                       														     									    						    			   				    					   					    							    	
+								</listhead>
+								<template name="model" var="item">
+									<listitem>
+										<listcell label="@load(item.row_number)" style="color:#333333;font-size:14px;"></listcell>
+										<listcell label="@load(item.department_Name)" style="text-align:left;color:#333333;font-size:13px;"></listcell>	
+										<listcell label="@load(item.position_Name)" style="text-align:left;color:#333333;font-size:13px;"></listcell>
+										<listcell label="@load(item.comment)" style="text-align:left;color:#333333;font-size:13px;"></listcell>																																																																	
+									</listitem>
+								</template>
+							</listbox>			
+					</tabpanel>
+					
+				</tabpanels>
+			</tabbox>			
+		   
+	</center>    
+	   	  					
+	</borderlayout> 	
+</zk>

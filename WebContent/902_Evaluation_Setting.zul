@@ -1,0 +1,383 @@
+<?page title="Evaluation SEETING" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<borderlayout 
+	vflex="1"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('view.view_902_Evaluation_Setting')"
+	validationMessages="@id('vmsgs')"
+	>
+	
+	<north style="background:#990000;">
+	    <vlayout style="background:#ffffff;">
+		        
+		 <toolbar>
+			<hlayout spacing="5px">
+				<toolbarbutton label="New" image="/images/add_16x16.png" 
+					onClick="@command('onOpenWindow_new')" style="color:#555555;font-size:13px;" />	
+					
+			    <toolbarbutton label="Edit" image="/images/_edit.png" 
+					onClick="@command('onOpenWindow_edit')" style="color:#555555;font-size:13px;" />	
+					
+				<toolbarbutton label="InActive" image="/images/del.gif" 
+					onClick="@command('')" style="color:#555555;font-size:13px;" />	
+																
+			</hlayout>
+		</toolbar>
+	
+		</vlayout>
+	</north>
+	<west collapsible="true" open="true" minsize="50" size="50" splittable="true" width="48%"> 
+		<vlayout vflex="1">		
+			    			
+			<listbox model="@load(vm.model_list_ev_head)" 
+				         selectedItem="@bind(vm.select_ev_head)" 
+				         onSelect="@command('onselect_evhead')"				       
+				         vflex="1">
+							<listhead sizable="true">
+								 <listheader label="#" width="30px" align="center" style="color:#FFFFFF;background-color:#990000"/>								 		
+								 <listheader label="Topic" align="center" style="color:#FFFFFF;background-color:#990000"/>	
+								 <listheader label="User" width="75px" align="center" style="color:#FFFFFF;background-color:#990000"/>
+								 <listheader label="Active" width="65px" align="center" style="color:#FFFFFF;background-color:#990000"/>					   					    					    									                       														     									    						    			   				    					   					    							    	
+							</listhead>
+							<template name="model" var="item">
+								<listitem>
+									<listcell label="@load(item.row_number)"></listcell>								
+									<listcell label="@load(item.ev_topic)" style="text-align:left;"></listcell>	
+									<listcell label="@load(item.emp_amount)" style="text-align:right;"></listcell>		
+									<listcell label="@load(item.is_active)" ></listcell>																																																								
+								</listitem>
+							</template>
+			</listbox>			
+		
+		</vlayout>
+	</west>
+	<center>	
+		<vlayout vflex="1" hflex="1">
+		
+		<tabbox vflex="1" hflex="1">
+			<tabs vflex="1" hflex="1">
+				<tab label="Detail" vflex="1"/>
+				<tab label="User" vflex="1"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+				<vlayout vflex="1" hflex="1">
+					<toolbar>
+							<hlayout spacing="5px">
+								
+								<toolbarbutton label="New"
+									image="/images/add_16x16.png"
+									onClick="@command('onNew_Detail')"
+									style="color:#555555;font-size:13px;" />
+									
+								<toolbarbutton label="Edit"
+									image="/images/_edit.png"
+									onClick="@command('onEdit_Detail')"
+									style="color:#555555;font-size:13px;" />
+				
+								<toolbarbutton label="InActive"
+									image="/images/del.gif"
+									onClick="@command('Active_ev_header_detail')"
+									style="color:#555555;font-size:13px;" />
+				
+							</hlayout>
+						</toolbar>
+						
+						<listbox id="list"
+							model="@load(vm.model_list_ev_detail)" 
+							selectedItem="@bind(vm.select_ev_detail)" 
+							onSelect="@command('onselect_detail')"
+							hflex="1" vflex="1">
+								<listhead>						 
+									 <listheader label="Sequen" width="60px" align="center" style="color:#FFFFFF;background-color:#990000;font-size:13px;"/>
+									 <listheader label="Description" align="center" style="color:#FFFFFF;background-color:#990000;font-size:13px;"/>
+									 <listheader label="Active" width="70px" align="center" style="color:#FFFFFF;background-color:#990000;font-size:13px;"/>						 						   					    					    				 											                       					    			   				    					   					    							    	
+								</listhead>
+								<template name="model" var="item">
+								<listitem>					    
+									<listcell label="@load(item.sequen)" style="text-align:center;font-size:13px;"></listcell>
+									<listcell label="@load(item.evdetail_topic)" style="text-align:left;font-size:13px;"></listcell>
+									<listcell label="@load(item.is_active)" style="text-align:center;font-size:13px;"></listcell>																																																	
+								</listitem>
+								</template>
+						</listbox>		
+				</vlayout>
+				</tabpanel>
+				
+				<tabpanel vflex="1">
+				<vlayout vflex="1" hflex="1">
+				    <toolbar>
+						<hlayout spacing="5px">
+							
+							<toolbarbutton label="New"
+								disabled="@bind(vm.disable_option)" image="/images/add_16x16.png"
+								onClick="@command('onOpenWindow_emp')"
+								style="color:#555555;font-size:13px;" />
+			
+							<toolbarbutton label="Delete"
+								disabled="@bind(vm.disable_option)" image="/images/del.gif"
+								onClick="@command('onDelete_ev_emp')"
+								style="color:#555555;font-size:13px;" />
+			
+							<toolbarbutton label="Search"
+								style="color:#555555;font-size:14px;">
+							</toolbarbutton>
+							
+							<textbox width="140px" value="@bind(vm.searchEmp_View)"
+								onOK="@command('load_ev_emp')" />
+								
+							<toolbarbutton label="Preview" image="/images/zoom.png"
+								style="color:#555555;font-size:13px;"
+								onClick="@command('load_ev_emp')" tooltiptext="Click To View." />
+			
+						</hlayout>
+					</toolbar>
+				    
+					<listbox model="@load(vm.model_list_ev_emp)" 
+					 selectedItem="@bind(vm.select_ev_emp)" 	
+					 multiple="true"
+					 checkmark="true"
+					 onSelect="@command('onselect_emp')"			       
+					 vflex="1">
+								<listhead sizable="true">
+								     <listheader label="" width="50px" align="center" style="color:#FFFFFF;background-color:#990000"/>
+									 <listheader label="#" width="50px" align="center" style="color:#FFFFFF;background-color:#990000"/>									
+									 <listheader label="Code" width="80px" align="center" style="color:#FFFFFF;background-color:#990000"/>	
+									 <listheader label="" width="50px" align="center" style="color:#FFFFFF;background-color:#990000"/>	
+									 <listheader label="Name" align="center" style="color:#FFFFFF;background-color:#990000"/>	
+									 <listheader label="Department" align="center" style="color:#FFFFFF;background-color:#990000"/>
+									 <listheader label="Position" align="center" style="color:#FFFFFF;background-color:#990000"/>			   					    					    									                       														     									    						    			   				    					   					    							    	
+								</listhead>
+								<template name="model" var="item">
+									<listitem>
+									    <listcell ></listcell>
+										<listcell label="@load(item.row_number)"></listcell>									
+										<listcell label="@load(item.evd_person_code)" style="text-align:left;"></listcell>	
+										<listcell label="@load(item.initialT)" style="text-align:left;"></listcell>	
+										<listcell label="@load(item.personName_Th)" style="text-align:left;"></listcell>	
+										<listcell label="@load(item.department_Name)" style="text-align:left;"></listcell>	
+										<listcell label="@load(item.positionNameT)" style="text-align:left;"></listcell>																																																							
+									</listitem>
+								</template>
+						</listbox>	
+				
+				</vlayout>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+		
+		<window
+					id="WindowEmp" 
+					style="background-color:#990000"		
+					border="normal" 
+					visible="@bind(vm.openWindow_emp? true:false)" 
+					onCancel="@command('onCancleWindow')"
+					onClose="event.stopPropagation();self.setVisible(false);"
+					closable="true" 
+					mode="modal" 
+					title="Personal Form" 
+					height="90%" 
+					width="90%"
+				    position="center" 
+				    sizable="false" 
+				    maximizable="true">
+			    <caption style="border:3px;color: #FFFFFF;"></caption>	
+			    <borderlayout vflex="1">
+			    <north>
+			    	<toolbar>
+						  <hlayout spacing="5px">	
+						  
+						    <toolbarbutton  label="Search" 
+						    style="color:#555555;font-size:14px;" ></toolbarbutton>							   					  						  						  								
+						    <textbox width="300px" 
+						    value="@bind(vm.searchEmp)" 
+						    onOK="@command('load_employee')"/>
+						    								            		
+		            	    <toolbarbutton label="Preview" 
+		            	    image="/images/zoom.png" 
+		            		style="color:#555555;font-size:13px;" 
+		            		onClick="@command('load_employee')"
+		            		tooltiptext="Click To View."
+		            		/>	          	   
+						    				  						   
+					        <toolbarbutton label="Insert" 
+					          image="/images/add_16x16.png" 	          
+					          onClick="@command('onInsert_ev_emp')"
+					          style="color:#555555;font-size:13px;" />	          	   
+											
+							<toolbarbutton label="Cancel" 
+							   image="/images/uncheck.png" 
+							  onClick="@command('onCancleWindow')"
+					          style="color:#555555;font-size:13px;" />				            				            		       	   	            							    						            									
+							</hlayout>	
+						</toolbar>
+			    </north>			   
+			    <center>
+			    	<vlayout vflex="1">
+			    		<listbox model="@load(vm.model_list_employee)" 
+			    		selectedItem="@bind(vm.select_employee)" 
+			    		multiple="true"
+			    		checkmark="true"
+			    		vflex="1">
+							<listhead sizable="true">
+							     <listheader label="" width="50px" align="center" style="color:#FFFFFF;background-color:#990000"/>					
+								 <listheader label="#" width="60px" align="center" sort="auto(row_Number)" style="color:#FFFFFF;background-color:#990000"/>						 
+								 <listheader label="Department"  align="center" sort="auto(department_Name)" style="color:#FFFFFF;background-color:#990000"/>												                       
+								 <listheader label="Position"  align="center" sort="auto(positionNameT)" style="color:#FFFFFF;background-color:#990000"/>								
+								 <listheader label="Code"  width="80px" align="center" sort="auto(personCode)" style="color:#FFFFFF;background-color:#990000"/>
+								 <listheader label="Title"  width="50px" align="center" sort="auto(initialT)" style="color:#FFFFFF;background-color:#990000"/>
+								 <listheader label="Name Thai"  align="center" sort="auto(personName_Th)" style="color:#FFFFFF;background-color:#990000"/>
+								 <listheader label="Nickname"  width="70px" align="center" sort="auto(nickname)" style="color:#FFFFFF;background-color:#990000"/>					    									   						    			   				    							   					     
+															    						    			   				    					   					    							    	
+							</listhead>
+							<template name="model" var="item">
+								<listitem>
+								    <listcell></listcell>
+									<listcell label="@load(item.row_Number)"></listcell>							
+									<listcell label="@load(item.department_Name)" style="text-align:left;"></listcell>				
+									<listcell label="@load(item.positionNameT)" style="text-align:left;"></listcell>								
+									<listcell label="@load(item.personCode)" style="text-align:left;"></listcell>
+									<listcell label="@load(item.initialT)" ></listcell>											    
+								    <listcell label="@load(item.personName_Th)" style="text-align:left;"></listcell>						
+									<listcell label="@load(item.nickname)" ></listcell>																																																																						
+								</listitem>
+							</template>
+						</listbox>				
+			    	</vlayout>
+			    </center>       	  					
+			    
+			    </borderlayout> 			
+			    </window>	     
+	
+		<window 
+					id="Window_Edit" 
+					style="background-color:#990000"		
+					border="normal" 
+					visible="@bind(vm.openWindow_edit? true:false)" 
+					onCancel="@command('onCancleWindow')"
+					onClose="event.stopPropagation();self.setVisible(false);"
+					closable="true" 
+					mode="modal" 
+					title="Evaluation Form" 
+					height="70%"
+					width="50%"
+				    position="center" 
+				    sizable="false" 
+				    maximizable="true">
+			    <caption style="border:3px;color: #FFFFFF;"></caption>	
+			    
+			    <vlayout spacing="8px" >
+				
+				<toolbar>
+					<hlayout spacing="5px">
+								
+						<toolbarbutton label="Save"
+							image="/images/main.gif"
+							onClick="@command('onselect_opt')"
+							style="color:#555555;font-size:13px;" />
+				
+						<toolbarbutton label="Close"
+							image="/images/del.gif"
+							onClick="@command('onCancleWindow')"
+							style="color:#555555;font-size:13px;" />
+				
+					</hlayout>
+				</toolbar>
+						
+				<listbox vflex="1" hflex="1">
+					<listhead>
+						<listheader width="20%"/>
+						<listheader width="80%" />
+					</listhead>
+					
+					<listitem>
+						<listcell label="Group:" style="text-align:right;font-size:13px;"/>
+						<listcell><textbox width="99%" value="@load(vm.select_ev_head.ev_type) @bind(vm.ev_type)"/></listcell>
+					</listitem>
+					
+					<listitem>
+						<listcell label="*Topic:" style="text-align:right;font-size:13px;"/>
+						<listcell><textbox width="99%" value="@load(vm.select_ev_head.ev_topic) @bind(vm.ev_topic)"/></listcell>
+					</listitem>
+					
+					<listitem>
+						<listcell label="Problem:" style="text-align:right;font-size:13px;"/>
+						<listcell><textbox width="99%" value="@load(vm.select_ev_head.ev_problem) @bind(vm.ev_problem)"/></listcell>
+					</listitem>
+					
+					<listitem>
+						<listcell label="*Suggestion:" style="text-align:right;font-size:13px;"/>
+						<listcell><textbox width="99%" value="@load(vm.select_ev_head.ev_suggestion) @bind(vm.ev_suggestion)"/></listcell>
+					</listitem>
+					
+				</listbox>
+			
+				</vlayout>
+		 </window>		    
+			 
+		<window 
+					id="Window_EditDetail" 
+					style="background-color:#990000"		
+					border="normal" 
+					visible="@bind(vm.openWindow_editdetail? true:false)" 
+					onCancel="@command('onCancleWindow')"
+					onClose="event.stopPropagation();self.setVisible(false);"
+					closable="true" 
+					mode="modal" 
+					title="Evaluation Form" 
+					height="70%"
+					width="50%"
+				    position="center" 
+				    sizable="false" 
+				    maximizable="true">
+			    <caption style="border:3px;color: #FFFFFF;"></caption>	
+			    
+			    <vlayout spacing="8px" >
+				
+				<toolbar>
+					<hlayout spacing="5px">
+								
+						<toolbarbutton label="Save"
+							image="/images/main.gif"
+							onClick="@command('onselect_optDetail')"
+							style="color:#555555;font-size:13px;" />
+				
+						<toolbarbutton label="Close"
+							image="/images/del.gif"
+							onClick="@command('onCancleWindow')"
+							style="color:#555555;font-size:13px;" />
+				
+					</hlayout>
+				</toolbar>
+						
+				<listbox vflex="1" hflex="1">
+					<listhead>
+						<listheader width="20%"/>
+						<listheader width="80%" />
+					</listhead>
+					
+					<listitem>
+						<listcell label="Sequen:" style="text-align:right;font-size:13px;"/>
+						<listcell>
+						<textbox width="99%" value="@bind(vm.sequen)"/>
+						</listcell>
+					</listitem>
+					
+					<listitem>
+						<listcell label="*Evdetail Topic:" style="text-align:right;font-size:13px;"/>
+						<listcell>
+						<textbox width="99%" rows="3"
+						value="@load(vm.select_ev_detail.evdetail_topic) @bind(vm.evdetail_topic)"/>
+						</listcell>
+					</listitem>
+					
+				</listbox>
+			
+				</vlayout>
+		 </window>		    
+			    
+		</vlayout>			   
+	</center>    
+	   	  					
+	</borderlayout> 	
+</zk>
